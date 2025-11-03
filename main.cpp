@@ -23,26 +23,42 @@ void generateCodes(int root, string codes[]);
 void encodeMessage(const string& filename, string codes[]);
 
 int main() {
-    int freq[26] = {0};
+    // int freq[26] = {0};
+    //
+    // // Step 1: Read file and count letter frequencies
+    // buildFrequencyTable(freq, "input.txt");
+    //
+    // // Step 2: Create leaf nodes for each character with nonzero frequency
+    // int nextFree = createLeafNodes(freq);
+    //
+    // // Step 3: Build encoding tree using your heap
+    // int root = buildEncodingTree(nextFree);
+    //
+    // // Step 4: Generate binary codes using an STL stack
+    // string codes[26];
+    // generateCodes(root, codes);
+    //
+    // // Step 5: Encode the message and print output
+    // encodeMessage("input.txt", codes);
+    //
+    // return 0;
 
-    // Step 1: Read file and count letter frequencies
-    buildFrequencyTable(freq, "input.txt");
+    // Testing for heap calling pushes to make sure any independent bugs from external testing don't apply
+    int weightArr[5] = {10, 5, 15, 20, 7};
+    MinHeap heap;
 
-    // Step 2: Create leaf nodes for each character with nonzero frequency
-    int nextFree = createLeafNodes(freq);
+    heap.push(0, weightArr);
+    heap.push(1, weightArr);
+    heap.push(2, weightArr);
+    heap.push(3, weightArr);
+    heap.push(4, weightArr);
 
-    // Step 3: Build encoding tree using your heap
-    int root = buildEncodingTree(nextFree);
-
-    // Step 4: Generate binary codes using an STL stack
-    string codes[26];
-    generateCodes(root, codes);
-
-    // Step 5: Encode the message and print output
-    encodeMessage("input.txt", codes);
-
-    return 0;
+    while (heap.size > 0) {
+        int idx = heap.pop(weightArr);
+        std::cout << "Index: " << idx << ", Weight: " << weightArr[idx] << "\n";
+    }
 }
+
 
 /*------------------------------------------------------
     Function Definitions (Students will complete logic)

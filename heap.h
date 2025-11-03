@@ -13,7 +13,7 @@ struct MinHeap {
     int size;
 
     MinHeap() { size = 0; }
-
+    // Inserts a new element at the end of the array, calls for upheap, then increments size + 1
     void push(int idx, int weightArr[]) {
         // TODO: insert index at end of heap, restore order using upheap()
         data[size] = idx;
