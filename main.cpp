@@ -65,7 +65,7 @@ int main() {
   ------------------------------------------------------*/
 
 // Step 1: Read file and count frequencies
-void buildFrequencyTable(int freq[], const string& filename) {
+void buildFrequencyTable(int freq[], const string &filename) {
     ifstream file(filename);
     if (!file.is_open()) {
         cerr << "Error: could not open " << filename << "\n";
@@ -107,13 +107,26 @@ int createLeafNodes(int freq[]) {
 int buildEncodingTree(int nextFree) {
     // TODO:
     // 1. Create a MinHeap object.
+        MinHeap heap;
     // 2. Push all leaf node indices into the heap.
+        for (int i = 0; i < nextFree; i++) {
+            heap.push(i, weightArr);
+        }
     // 3. While the heap size is greater than 1:
+        while (heap.size > 1) {
     //    - Pop two smallest nodes
+            int i1 = heap.pop(weightArr);
+            int i2 = heap.pop(weightArr);
     //    - Create a new parent node with combined weight
+            weightArr[nextFree]= weightArr[i1] + weightArr[i2];
     //    - Set left/right pointers
+            leftArr[nextFree] = i1;
+            rightArr[nextFree] = i2;
     //    - Push new parent index back into the heap
+            heap.push(nextFree, weightArr);
+            nextFree++;
     // 4. Return the index of the last remaining node (root)
+    }
     return -1; // placeholder
 }
 
