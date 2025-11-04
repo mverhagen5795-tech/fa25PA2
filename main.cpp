@@ -131,12 +131,12 @@ void generateCodes(int root, string codes[]) {
     stack<pair<int,string>>stack;
     stack.push({root,""}); // Starts the stack at root with a empty path
     while (!stack.empty()) {
-        pair<int,string> p = stack.top();
+        pair<int,string> p = stack.top(); // Pops the top of the sstack
         stack.pop();
-        int node = p.first;
-        string code = p.second;
+        int node = p.first; // assigns the current node to the pair first
+        string code = p.second; //assigns the code to the pair's second value
 
-        int left = leftArr[node];
+        int left = leftArr[node]; // sets left and right nodes according to the general array
         int right = rightArr[node];
 
         // Record code when a leaf node is reached.
