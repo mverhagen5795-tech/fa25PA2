@@ -23,41 +23,30 @@ void generateCodes(int root, string codes[]);
 void encodeMessage(const string& filename, string codes[]);
 
 int main() {
-    // int freq[26] = {0};
+    int freq[26] = {0};
     //
     // // Step 1: Read file and count letter frequencies
-    // buildFrequencyTable(freq, "input.txt");
+    buildFrequencyTable(freq, "input.txt");
     //
     // // Step 2: Create leaf nodes for each character with nonzero frequency
-    // int nextFree = createLeafNodes(freq);
+    int nextFree = createLeafNodes(freq);
     //
     // // Step 3: Build encoding tree using your heap
-    // int root = buildEncodingTree(nextFree);
+    int root = buildEncodingTree(nextFree);
     //
     // // Step 4: Generate binary codes using an STL stack
-    // string codes[26];
-    // generateCodes(root, codes);
+    string codes[26];
+    generateCodes(root, codes);
     //
     // // Step 5: Encode the message and print output
-    // encodeMessage("input.txt", codes);
+    encodeMessage("input.txt", codes);
     //
-    // return 0;
+    return 0;
 
     // Testing for heap calling pushes to make sure any independent bugs from external testing don't apply
-    int weightArr[5] = {10, 5, 15, 20, 7};
-    MinHeap heap;
 
-    heap.push(0, weightArr);
-    heap.push(1, weightArr);
-    heap.push(2, weightArr);
-    heap.push(3, weightArr);
-    heap.push(4, weightArr);
-
-    while (heap.size > 0) {
-        int idx = heap.pop(weightArr);
-        std::cout << "Index: " << idx << ", Weight: " << weightArr[idx] << "\n";
     }
-}
+
 
 
 /*------------------------------------------------------
@@ -104,6 +93,8 @@ int createLeafNodes(int freq[]) {
 }
 
 // Step 3: Build the encoding tree using heap operations
+        // The buildEncodingTree is an example of a Huffman tree builder and it works by repeatedly taking the two smallest nodes,
+        // merging them into one parent node with a combined weight of their sum, then pushes that parent node into a min heap
 int buildEncodingTree(int nextFree) {
     // TODO:
     // 1. Create a MinHeap object.
@@ -127,15 +118,48 @@ int buildEncodingTree(int nextFree) {
             nextFree++;
     // 4. Return the index of the last remaining node (root)
     }
-    return -1; // placeholder
+    return heap.pop(weightArr); // placeholder
 }
 
 // Step 4: Use an STL stack to generate codes
 void generateCodes(int root, string codes[]) {
     // TODO:
     // Use stack<pair<int, string>> to simulate DFS traversal.
-    // Left edge adds '0', right edge adds '1'.
-    // Record code when a leaf node is reached.
+    if (root < 0) {
+        return;
+    }
+    stack<pair<int,string>>stack;
+    stack.push({root,""}); // Starts the stack at root with a empty path
+    while (!stack.empty()) {
+        pair<int,string> p = stack.top();
+        stack.pop();
+        int node = p.first;
+        string code = p.second;
+
+        int left = leftArr[node];
+        int right = rightArr[node];
+
+        // Record code when a leaf node is reached.
+        if (left == -1 && right == -1) { // means neither has a child node so it must be a leaf node
+            if (code.empty()) {
+                code = "0";
+            }
+            char c = charArr[node];
+            if (c >= 'a' && c <= 'z' ) { // case to check against uppercase
+                codes[ c-'a' ] = code; // assigns the code to the value of ASCII of the letter minus 'a' which is 97
+
+            }
+        }
+        // Left edge adds '0', right edge adds '1'.
+        else {
+            if (right != -1){
+                stack.push({right, code + "1"});
+            }
+            if (left != -1){
+                stack.push({left, code + "0"});
+            }
+        }
+    }
 }
 
 // Step 5: Print table and encoded message
